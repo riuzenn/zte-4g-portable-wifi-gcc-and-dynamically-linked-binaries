@@ -97,7 +97,7 @@ make host-gcc-final CXXFLAGS="-std=gnu++11"
 ## § 以下介绍我基于该交叉编译器编译的动态链接工具  
 几点说明：  
 1.所有工具的编译命令在[编译命令](./编译命令)下载，编译好的工具在[sbin](./usr/sbin)下载。  
-2.有些工具我在源文件基础上有裁剪。如需自己编译，留意备注，下载[源码](./源码)里的文件替换到相应路径。  
+2.有些工具我在源文件基础上有裁剪，下载[源码](./源码)里的文件替换到相应路径。  
 3.安装路径。我倾向于/opt/mybin，但是busybox貌似硬编码了PATH=/sbin:/usr/sbin:/bin:/usr/bin，又不想每次以全路径调用可执行文件。所以我决定将可执行文件放/usr/sbin，因为4个路径里这里文件最少。记得chmod 744 /usr/sbin/工具名字  
 4.除了curl启用了完整重定位只读、栈溢出保护，为了缩小体积，我编译的应用都没启用生成位置无关可执行文件、完整重定位只读、栈溢出保护。可如下添加参数开启保护：  
 ```
@@ -105,7 +105,7 @@ CFLAGS里"-fno-pie -fno-stack-protector"修改为"-fPIE -fstack-protector-strong
 LDFLAGS里"-Wl,-z,norelro -Wl,-z,lazy"修改为"-pie -Wl,-z,relro -Wl,-z,now"
 ##gcc4.9不支持-no-pie参数
 ```
-5.所有工具的二进制文件都用[sstrip](https://github.com/BR903/ELFkickers)处理过，缩小了体积。  
+5.所有工具都用[sstrip](https://github.com/BR903/ELFkickers)处理过，缩小了体积。  
 编译sstrip：  
 ```
 cd ~
