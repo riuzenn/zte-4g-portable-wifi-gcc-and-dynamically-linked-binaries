@@ -71,9 +71,12 @@ apt install -y build-essential python unzip rsync bc wget cpio file
 exit
 sudo chown -R $(whoami):$(whoami) ~/buildroot
 ```
-~~make host-gcc-final  
+如果启用了Toolchain→Enable C++ support：  
+```
+make host-gcc-final  
 make host-gcc-final CXXFLAGS="-std=gnu++03"  
-make host-gcc-final CXXFLAGS="-std=gnu++11"~~  
+make host-gcc-final CXXFLAGS="-std=gnu++11"  
+```
 ### ➤打包(位于./output/host/usr)、解压编译器，也就是挪个地  
 打包编译器：`cd output/host;tar -cJf toolchain-backup.tar.xz usr`  
 备份：`cp toolchain-backup.tar.gz ~`  
