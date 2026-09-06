@@ -177,7 +177,7 @@ scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提�
 <div align="center"><img src="./images/sftp.png"></div>  
 
 ### ◉curl、h2t和j2t  
-curl保留http(s)、tls 1.2和1.3。可以手搓请求命令，利用curl调用大模型api。  
+curl保留http(s)、tls 1.2和1.3。可以手搓请求命令，利用curl调用大语言模型api。  
 <div align="left"><img src="./images/buildroot配置页面.jpg"></div>  
 
 h2t提取html源码的标签文本并打印：  
