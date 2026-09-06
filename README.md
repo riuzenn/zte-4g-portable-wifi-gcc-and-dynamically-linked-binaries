@@ -118,10 +118,10 @@ LDFLAGS里"-Wl,-z,norelro -Wl,-z,lazy"修改为"-pie -Wl,-z,relro -Wl,-z,now"
 ### ◉at  
 我重写了libatutils库里的几个函数，彻底不打印无关日志。受cvghh@酷安启发，用第二个参数控制输出格式，为1时打印`_返回字符串_`方便正则匹配。  
 原来：  
-<div align="left"><img src="./images/buildroot配置页面.jpg"></div>  
+<div align="left"><img src="./images/at工具示例.jpg"></div>  
 
 现在：  
-<div align="left"><img src="./images/buildroot配置页面.jpg"></div>  
+<div align="left"><img src="./images/at工具示例2.jpg"></div>  
 
 ### ◉dropbear和sftp-server  
 dropbear只保留curve25519、ed25519、chacha20-poly1305、sha2-256算法。  
@@ -181,13 +181,13 @@ scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提�
 
 ### ◉curl、h2t和j2t  
 curl保留http(s)、tls 1.2和1.3。可以手搓请求命令，利用curl调用大语言模型api。  
-<div align="left"><img src="./images/buildroot配置页面.jpg"></div>  
+<div align="left"><img src="./images/调用大语言模型api.jpg"></div>  
 
 h2t提取html源码的标签文本并打印：  
-<div align="left"><img src="./images/buildroot配置页面.jpg"></div>  
+<div align="left"><img src="./images/h2t.jpg"></div>  
 
 j2t提取json里的键值对文本并打印。
-<div align="left"><img src="./images/buildroot配置页面.jpg"></div>  
+<div align="left"><img src="./images/j2t.jpg"></div>  
 
 ### ◉类vim快捷键的neatvi文本编辑器、sfm文件管理器、less分页阅读器  
 #### neatvi  
