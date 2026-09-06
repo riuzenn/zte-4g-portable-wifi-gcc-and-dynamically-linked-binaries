@@ -24,7 +24,7 @@ http://192.168.0.1/goform/goform_set_cmd_process?goformId=SET_DEVICE_MODE&debug_
 ◉Target Architecture: ARM (little endian)  
 ◉Target Architecture Variant: cortex-A7(这一版的buildroot还没有添加A53选项，只能在编译时往CFLAGS和LDFLAGS里添加-mcpu=cortex-a53 -mtune=cortex-a53)  
 ◉Target ABI: EABI (没有hf后缀)  
-◉Floating point strategy: Soft float (-mfloat-abi=soft，内核没有硬件浮点支持，不确定处理器本身是否支持)  
+◉Floating point strategy: Soft float (对应-mfloat-abi=soft，内核没有硬件浮点支持，不确定处理器本身是否支持)  
 ◉ARM instruction set: Thumb2(对应-mthumb)  
 ➤Toolchain  
 ◉Kernel Headers：选择Manually specified Linux version  
@@ -190,7 +190,7 @@ j2t提取json里的键值对文本并打印。
 
 ### ◉类vim快捷键的neatvi文本编辑器、sfm文件管理器、less分页阅读器  
 #### neatvi  
-编译命令已写入[Makefile-neatvi](./编译命令/Makefile-neatvi)，编译成[vi](./usr/sbin/vi)。  
+neatvi被编译成了[vi](./usr/sbin/vi)。它本身支持处理utf8编码，但是通过adb shell获得的终端会以gbk编码输入字符导致neatvi不能识别显示乱码。解决方法是开启Windows的"Beta版：使用Unicode UTF-8提供全球语言支持"（通过ssh获得的终端没有这个问题）。  
 如下改源码里的term.c里的term_read()函数，不然不识别windows的回车（也可以不改，只用ctrl+j当回车）。  
 ```
 #添加
@@ -199,9 +199,13 @@ j2t提取json里的键值对文本并打印。
 ```
 <div align="center"><img src="./images/修改term_read()函数.png"></div>  
 
-#### sfm文件管理器  
-<div align="center"><img src="./images/sfm.jpg"></div>  
 
+#### sfm文件管理器  
+按q退出。  
+<div align="left"><img src="./images/sfm.jpg" style="width: auto; height: 300px;"></div>  
+
+#### less分页阅读器
+限制最大只读1000行。  
 ### ◉调试类：readelf、strace、dmesg、hexdump、strings  
 ### ◉其他：nslookup、tree、dtach、vmstat  
 
