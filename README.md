@@ -124,8 +124,7 @@ make > ~/1.txt 2>&1
 <div><img src="./images/at工具示例2.jpg" style="width: 350px; height: auto;"></div>  
 
 ### ◉dropbear和sftp-server  
-dropbear只保留curve25519、ed25519、chacha20-poly1305、sha2-256算法。  
-编译命令已写入[Makefile-dropbear](./编译命令/Makefile-dropbear)和[Makefile-sftp-server](./编译命令/Makefile-sftp-server)。  
+dropbear只保留curve25519、ed25519、chacha20-poly1305、sha2-256算法。    
 #### 以下是几个注意点：  
 1.如需使用密码登录ssh，dropbear会用到/lib/libcrypt.so.0库的crypt()函数，[testcrypt.c](./源码/testcrypt.c)检测结果显示自带的libcrypt库只支持DES和MD5算法，如调用不支持的算法会回退到DES算法，取原盐值的前两位如$6作为新盐值。最后得出和/etc/shadow(默认SHA512算法)里记录的不一样的密码哈希值，从而一直验证失败。  
 <div align="center"><img src="./images/testcrypt结果.jpg"></div>  
@@ -200,8 +199,8 @@ j2t提取json里的键值对文本并打印。
 ```
 <div align="center"><img src="./images/修改term_read()函数.png"></div>  
 
-#### sfm文件管理器
-编译命令已写入[Makefile-sfm](./编译命令/Makefile-sfm)，编译前记得替换
+#### sfm文件管理器  
+<div align="center"><img src="./images/sfm.jpg"></div>  
 
 ### ◉调试类：readelf、strace、dmesg、hexdump、strings  
 ### ◉其他：nslookup、tree、dtach、vmstat  
