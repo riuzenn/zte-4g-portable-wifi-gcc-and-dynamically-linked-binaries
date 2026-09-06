@@ -73,6 +73,7 @@ sudo chown -R $(whoami):$(whoami) ~/buildroot
 ```
 如果启用了Toolchain→Enable C++ support：  
 ```
+#报错的时候执行  
 make host-gcc-final  
 make host-gcc-final CXXFLAGS="-std=gnu++03"  
 make host-gcc-final CXXFLAGS="-std=gnu++11"  
