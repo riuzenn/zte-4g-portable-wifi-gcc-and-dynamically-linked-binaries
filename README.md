@@ -6,7 +6,7 @@
 http://192.168.0.1/goform/goform_set_cmd_process?goformId=SET_DEVICE_MODE&debug_enable=1  
 ### 关闭adb  
 http://192.168.0.1/goform/goform_set_cmd_process?goformId=SET_DEVICE_MODE&debug_enable=0  
-## 编译buildroot交叉编译器arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3  
+## § 编译buildroot交叉编译器arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3  
 动态编译出来的二进制elf体积较小，但是需要和运行环境匹配的so库、头文件和crt*.o启动文件。后二者在随身wifi系统里并不存在。我通过反编译、读取符号和编译运行c程序，推测原来的c库配置。最终buildroot编译出的c库和设备c库，二者不共有的符号控制在两位数（不完全一致，所以编译出的elf有可能段错误）。  
 ### ➤下载源码和配置
 在这个网站下载Buildroot源码：https://buildroot.org  
@@ -91,7 +91,7 @@ make host-gcc-final CXXFLAGS="-std=gnu++11"
 下载我编译好的[arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz](https://github.com/riuzenn/zte-4g-portable-wifi-gcc-and-dynamically-linked-binaries/blob/main/arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz)  
 `cd ~`  
 `tar -xJvf arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz`  
-## 以下介绍我基于该交叉编译器编译的动态链接工具  
+## § 以下介绍我基于该交叉编译器编译的动态链接工具  
 ### ◉at  
 我重写了libatutils库里的几个函数，彻底不打印无关日志。受cvghh@酷安启发，用第二个参数控制输出格式，为1时打印"_返回字符串_"方便正则匹配。  
 原来：  
