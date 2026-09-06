@@ -202,7 +202,7 @@ neatvi被编译成了[vi](./usr/sbin/vi)。它本身支持处理utf8编码，但
 
 #### sfm文件管理器  
 按q退出。  
-<div align="left"><img src="./images/sfm.jpg" style="width: auto; height: 300px;"></div>  
+<div align="left"><img src="./images/sfm.jpg"></div>  
 
 #### less分页阅读器
 限制最大只读1000行。  
