@@ -95,10 +95,17 @@ make host-gcc-final CXXFLAGS="-std=gnu++11"
 `cd ~`  
 `tar -xJvf arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz`  
 ## § 以下介绍我基于该交叉编译器编译的动态链接工具  
-安装路径：
-我倾向于/opt/mybin，但是busybox貌似硬编码了PATH=/sbin:/usr/sbin:/bin:/usr/bin，又不想每次以全路径调用可执行文件。所以我决定将可执行文件放/usr/sbin，因为4个路径里这里文件最少。记得chmod 744 /usr/sbin/工具名字  
 几点说明：  
-1.所有工具的二进制文件都用[sstrip](https://github.com/BR903/ELFkickers)处理过，缩小了体积。  
+1.所有工具的编译命令在[编译命令](./编译命令)下载，编译好的工具在[sbin](./usr/sbin)下载。  
+2.有些工具我在源文件基础上有裁剪。如需自己编译，留意备注，下载[源码](./源码)里的文件替换到相应路径。  
+3.安装路径。我倾向于/opt/mybin，但是busybox貌似硬编码了PATH=/sbin:/usr/sbin:/bin:/usr/bin，又不想每次以全路径调用可执行文件。所以我决定将可执行文件放/usr/sbin，因为4个路径里这里文件最少。记得chmod 744 /usr/sbin/工具名字  
+4.除了curl启用了完整重定位只读、栈溢出保护，为了缩小体积，我编译的应用都没启用生成位置无关可执行文件、完整重定位只读、栈溢出保护。可如下添加参数开启保护：  
+```
+CFLAGS里"-fno-pie -fno-stack-protector"修改为"-fPIE -fstack-protector-strong"  
+LDFLAGS里"-Wl,-z,norelro -Wl,-z,lazy"修改为"-pie -Wl,-z,relro -Wl,-z,now"
+##gcc4.9不支持-no-pie参数
+```
+5.所有工具的二进制文件都用[sstrip](https://github.com/BR903/ELFkickers)处理过，缩小了体积。  
 编译sstrip：  
 ```
 cd ~
@@ -108,20 +115,13 @@ make > ~/1.txt 2>&1
 # 超级精简一个二进制可执行文件
 ~/ELFkickers/sstrip/sstrip 目标名字
 ```
-2.除了curl启用了完整重定位只读、栈溢出保护，为了缩小体积，我编译的应用都没启用生成位置无关可执行文件、完整重定位只读、栈溢出保护。可如下添加参数开启保护：  
-```
-CFLAGS里"-fno-pie -fno-stack-protector"修改为"-fPIE -fstack-protector-strong"  
-LDFLAGS里"-Wl,-z,norelro -Wl,-z,lazy"修改为"-pie -Wl,-z,relro -Wl,-z,now"
-##gcc4.9不支持-no-pie参数
-```
-3.有些工具我在源文件基础上有裁剪。如需自己编译，留意备注，替换
 ### ◉at  
 我重写了libatutils库里的几个函数，彻底不打印无关日志。受cvghh@酷安启发，用第二个参数控制输出格式，为1时打印`_返回字符串_`方便正则匹配。  
 原来：  
-<div align="left"><img src="./images/at工具示例.jpg"></div>  
+<div><img src="./images/at工具示例.jpg"  style="width: 350px; height: auto;"></div>  
 
 现在：  
-<div align="left"><img src="./images/at工具示例2.jpg"></div>  
+<div><img src="./images/at工具示例2.jpg" style="width: 350px; height: auto;"></div>  
 
 ### ◉dropbear和sftp-server  
 dropbear只保留curve25519、ed25519、chacha20-poly1305、sha2-256算法。  
@@ -184,10 +184,10 @@ curl保留http(s)、tls 1.2和1.3。可以手搓请求命令，利用curl调用�
 <div align="left"><img src="./images/调用大语言模型api.jpg"></div>  
 
 h2t提取html源码的标签文本并打印：  
-<div align="left"><img src="./images/h2t.jpg"></div>  
+<div><img src="./images/h2t.jpg"  style="width: 350px; height: auto;"></div>  
 
 j2t提取json里的键值对文本并打印。
-<div align="left"><img src="./images/j2t.jpg"></div>  
+<div align="left"><img src="./images/j2t.jpg" style="width: auto; height: 150px;"></div>  
 
 ### ◉类vim快捷键的neatvi文本编辑器、sfm文件管理器、less分页阅读器  
 #### neatvi  
