@@ -32,7 +32,7 @@ http://192.168.0.1/goform/goform_set_cmd_process?goformId=SET_DEVICE_MODE&debug_
 ◉Custom kernel headers series：选择3.4.x  
 ◉C library: 选择uClibc  
 ◉uClibc C library Version：选择uClibc 0.9.33.x（我看过.config，2015.11.1默认用0.9.33.2版的）  
-◉uClibc configuration file to use?：输入package/uclibc/uClibc-0.9.33.2.config（下载[uClibc-0.9.33.2.config](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/uClibc-0.9.33.2.config)推送到~/buildroot/buildroot-2015.11.1/package/uclibc）  
+◉uClibc configuration file to use?：输入package/uclibc/uClibc-0.9.33.2.config（下载[uClibc-0.9.33.2.config](./源码/uClibc-0.9.33.2.config)推送到~/buildroot/buildroot-2015.11.1/package/uclibc）  
 ◉Enable RPC support：勾选（按y）  
 ◉Enable WCHAR support：勾选  
 ◉Enable stack protection support：勾选(对应-fstack-protector-strong，如不需要栈保护则-fno-stack-protector)  
@@ -73,9 +73,11 @@ sudo chown -R $(whoami):$(whoami) ~/buildroot
 ```
 如果启用了Toolchain→Enable C++ support：  
 ```
-#报错的时候执行  
-make host-gcc-final  
-make host-gcc-final CXXFLAGS="-std=gnu++03"  
+#第一次报错执行  
+make host-gcc-final
+#第二次报错执行  
+make host-gcc-final CXXFLAGS="-std=gnu++03"
+#第三次报错执行  
 make host-gcc-final CXXFLAGS="-std=gnu++11"  
 ```
 ### ➤打包(位于./output/host/usr)、解压编译器，也就是挪个地  
@@ -89,13 +91,13 @@ make host-gcc-final CXXFLAGS="-std=gnu++11"
 把随身wifi的lib目录下的所有文件复制到编译电脑的~/usr/ztelib路径（建议通过adb pull或cp -rL等方式将软链接转换成实际文件）。  
 可能需要将~/ztelib里所有.0后缀的标准库（除libc.so.0）另存为.so后缀，也就是同时存在.so.0和.so后缀。  
 ### ➤如何使用现成的编译器
-下载我编译好的[arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz](https://github.com/riuzenn/zte-4g-portable-wifi-gcc-and-dynamically-linked-binaries/blob/main/arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz)  
+下载我编译好的[arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz](./arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz)  
 `cd ~`  
 `tar -xJvf arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz`  
 ## § 以下介绍我基于该交叉编译器编译的动态链接工具  
 安装路径：
 我倾向于/opt/mybin，但是busybox貌似硬编码了PATH=/sbin:/usr/sbin:/bin:/usr/bin，又不想每次以全路径调用可执行文件。所以我决定将可执行文件放/usr/sbin，因为4个路径里这里文件最少。记得chmod 744 /usr/sbin/工具名字  
-两点说明：  
+几点说明：  
 1.所有工具的二进制文件都用[sstrip](https://github.com/BR903/ELFkickers)处理过，缩小了体积。  
 编译sstrip：  
 ```
@@ -112,6 +114,7 @@ CFLAGS里"-fno-pie -fno-stack-protector"修改为"-fPIE -fstack-protector-strong
 LDFLAGS里"-Wl,-z,norelro -Wl,-z,lazy"修改为"-pie -Wl,-z,relro -Wl,-z,now"
 ##gcc4.9不支持-no-pie参数
 ```
+3.有些工具我在源文件基础上有裁剪。如需自己编译，留意备注，替换
 ### ◉at  
 我重写了libatutils库里的几个函数，彻底不打印无关日志。受cvghh@酷安启发，用第二个参数控制输出格式，为1时打印`_返回字符串_`方便正则匹配。  
 原来：  
@@ -122,9 +125,9 @@ LDFLAGS里"-Wl,-z,norelro -Wl,-z,lazy"修改为"-pie -Wl,-z,relro -Wl,-z,now"
 
 ### ◉dropbear和sftp-server  
 dropbear只保留curve25519、ed25519、chacha20-poly1305、sha2-256算法。  
-编译命令已写入[Makefile-dropbear](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/Makefile-dropbear)和[Makefile-sftp-server](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/Makefile-dropbear)。  
+编译命令已写入[Makefile-dropbear](./编译命令/Makefile-dropbear)和[Makefile-sftp-server](./编译命令/Makefile-sftp-server)。  
 #### 以下是几个注意点：  
-1.如需使用密码登录ssh，dropbear会用到/lib/libcrypt.so.0库的crypt()函数，[testcrypt.c](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/testcrypt.c)检测结果显示自带的libcrypt库只支持DES和MD5算法，如调用不支持的算法会回退到DES算法，取原盐值的前两位如$6作为新盐值。最后得出和/etc/shadow(默认SHA512算法)里记录的不一样的密码哈希值，从而一直验证失败。  
+1.如需使用密码登录ssh，dropbear会用到/lib/libcrypt.so.0库的crypt()函数，[testcrypt.c](./源码/testcrypt.c)检测结果显示自带的libcrypt库只支持DES和MD5算法，如调用不支持的算法会回退到DES算法，取原盐值的前两位如$6作为新盐值。最后得出和/etc/shadow(默认SHA512算法)里记录的不一样的密码哈希值，从而一直验证失败。  
 <div align="center"><img src="./images/testcrypt结果.jpg"></div>  
 
 解决方式有把全功能的libcrypt静态编译进dropbear，  
@@ -137,7 +140,7 @@ dropbear只保留curve25519、ed25519、chacha20-poly1305、sha2-256算法。
 3.如需压缩功能，编译dropbear可能会用到[libz.so.1.2.11库](https://zlib.net/fossils/zlib-1.2.11.tar.gz)的两个头文件，解压出zconf.h和zlib.h放到~/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/include/，buildroot不自带。  
 4.第一次连接ssh会提示服务主机的公钥指纹不在已知列表，输入yes。之后输入账户明文密码按回车，输入的密码不会同步显示到屏幕，也不会有光标闪烁，第一次接触这个机制时我还以为程序卡住了。  
 #### 安装  
-编译好的[dropbearmulti](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/usr/sbin/dropbearmulti)、[sftp-server](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/Makefile-dropbear)连同[sshon](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/usr/sbin/sshon)和[sshoff](https://github.com/riuzenn/zte-4g-portable-wifi-advanced-webui/blob/main/usr/sbin/sshoff)推送到/usr/sbin，执行：  
+编译好的[dropbearmulti](./usr/sbin/dropbearmulti)、[sftp-server](./usr/sbin/sftp-server)连同[sshon](./usr/sbin/sshon)和[sshoff](./usr/sbin/sshoff)推送到/usr/sbin，执行：  
 ```  
 mount -o remount,rw /
 cd /usr/sbin
@@ -186,7 +189,20 @@ h2t提取html源码的标签文本并打印：
 j2t提取json里的键值对文本并打印。
 <div align="left"><img src="./images/buildroot配置页面.jpg"></div>  
 
-### ◉类vim快捷键的neatvi、sfm文件管理器、less分页阅读器  
+### ◉类vim快捷键的neatvi文本编辑器、sfm文件管理器、less分页阅读器  
+#### neatvi  
+编译命令已写入[Makefile-neatvi](./编译命令/Makefile-neatvi)，编译成[vi](./usr/sbin/vi)。  
+如下改源码里的term.c里的term_read()函数，不然不识别windows的回车（也可以不改，只用ctrl+j当回车）。  
+```
+#添加
+    if (c == '\r')
+        c = '\n'; 
+```
+<div align="center"><img src="./images/修改term_read()函数.png"></div>  
+
+#### sfm文件管理器
+编译命令已写入[Makefile-sfm](./编译命令/Makefile-sfm)，编译前记得替换
+
 ### ◉调试类：readelf、strace、dmesg、hexdump、strings  
 ### ◉其他：nslookup、tree、dtach、vmstat  
 
