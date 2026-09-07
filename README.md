@@ -175,8 +175,8 @@ f30ap的默认账户名是admin，如需修改要同步改/etc里的passwd和sha
 
 #### 客户端scp和sftp  
 scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提供的ssh进程，使用二者前要先启用dropbear。windows客户端的scp工具使用sftp协议，dropbear会自己调用sftp-server。  
-<div align="center"><img src="./images/scp.png"></div>    
-<div align="center"><img src="./images/sftp.png"></div>  
+<div align="center"><img src="./images/scp.jgp"></div>    
+<div align="center"><img src="./images/sftp.jpg"></div>  
 
 ### ◉curl、h2t和j2t  
 curl保留http(s)、tls 1.2和1.3。可以手搓请求命令，利用curl调用大语言模型api。  
