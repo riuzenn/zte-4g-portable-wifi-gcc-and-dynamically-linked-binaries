@@ -175,7 +175,7 @@ f30ap的默认账户名是admin，如需修改要同步改/etc里的passwd和sha
 
 #### 客户端scp和sftp  
 scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提供的ssh进程，使用二者前要先启用dropbear。windows客户端的scp工具使用sftp协议，dropbear会自己调用sftp-server。  
-<div align="center"><img src="./images/scp.jgp"></div>    
+<div align="center"><img src="./images/scp.jpg"></div>    
 <div align="center"><img src="./images/sftp.jpg"></div>  
 
 ### ◉curl、h2t和j2t  
