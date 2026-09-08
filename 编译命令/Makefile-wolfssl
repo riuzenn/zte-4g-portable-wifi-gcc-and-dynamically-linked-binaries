@@ -16,7 +16,7 @@ export AR="${CROSS_COMPILE}gcc-ar"
 export RANLIB="${CROSS_COMPILE}gcc-ranlib"
 export STRIP="${CROSS_COMPILE}strip"
 
-export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections --sysroot=${SYSROOT} -fno-pie -fstack-protector-strong -flto=$(nproc) -falign-functions=2 -falign-loops=2 -falign-jumps=2 -DMICRO_SESSION_CACHE"
+export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections --sysroot=${SYSROOT} -fno-pie -fstack-protector-strong -flto=$(nproc) -falign-functions=2 -falign-loops=2 -falign-jumps=2 -DMICRO_SESSION_CACHE -DNO_WOLFSSL_SERVER -DWOLFSSL_NO_ECC_SIGN"
 
 export LDFLAGS="-mcpu=cortex-a53 -mtune=cortex-a53 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -L${ZTE_LIB} -Wl,-rpath-link=${ZTE_LIB} -Wl,-O2 -Wl,--gc-sections -Wl,-dynamic-linker,/lib/ld-uClibc.so.0 -Wl,-z,max-page-size=4096 -Wl,--no-allow-shlib-undefined -Wl,-z,norelro -Wl,-z,lazy -Wl,-t -Wl,-Map,aaa.map -flto=$(nproc)"
 
@@ -61,8 +61,8 @@ V="${V} --disable-ocsp --disable-ocspstapling --disable-ocspstapling2"
 V="${V} --disable-crl --disable-crl-monitor --disable-session-ticket"
 # ---------- 证书/密钥管理 ----------
 V="${V} --disable-oaep --disable-asn-print --disable-oldnames"
-V="${V} --enable-pkcs8 --enable-pwdbased --disable-sessioncerts"
-V="${V} --disable-pkcs12 --enable-altcertchains"
+V="${V} --disable-pkcs8 --disable-pwdbased --disable-sessioncerts"
+V="${V} --disable-pkcs12 --enable-altcertchains --enable-rsapub --disable-harden"
 V="${V} --disable-keygen --disable-certgen --disable-certreq"
 V="${V} --disable-scep --disable-pkcs7 --disable-pkcs11 --disable-enckeys"
 # ---------- 运行时资源 ----------
@@ -79,7 +79,7 @@ V="${V} --disable-errorstrings"
 V="${V} --disable-fips --disable-selftest --disable-wolfprovider --disable-engine"
 V="${V} --disable-wolfclu --disable-wolftpm --disable-wolfssh --disable-wolfsentry"
 V="${V} --disable-openssh --disable-openvpn --disable-nginx --disable-haproxy"
-V="${V} --disable-stunnel --disable-curl --enable-opensslextra --disable-opensslall"
+V="${V} --disable-stunnel --disable-curl --disable-opensslextra --disable-opensslall"
 V="${V} --disable-opensslcoexist"
 # ---------- 不编译测试/示例 ----------
 V="${V} --disable-examples --disable-crypttests --disable-benchmark --disable-crypttests-libs"

@@ -68,9 +68,9 @@ cd src
 ${CROSS_COMPILE}size -A curl
 ${CROSS_COMPILE}size -A curl | grep -E '\.(text|rodata|bss)\b'
 # 2) 最大的符号
-${CROSS_COMPILE}nm -S --size-sort curl | tail -40
+${CROSS_COMPILE}nm -S --size-sort curl
 # 3) 链接图
-find ~/curl_build -name curl.map
+find ~/curl_build -name aaa.map
 
 
 
@@ -91,4 +91,5 @@ ${STRIP} --strip-all -R .note -R .comment -R .gnu_debuglink -R .gnu_debugdata cu
 ls -l curl
 
 #去 https://curl.se/ca/cacert.pem 下载CA证书集合，推送到/etc
+#curl -k https://curl.se/ca/cacert.pem -o /etc/cacert.pem
 #chmod 644 /etc/cacert.pem
