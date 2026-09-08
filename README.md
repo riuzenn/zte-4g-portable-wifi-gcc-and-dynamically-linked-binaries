@@ -211,7 +211,7 @@ neatvi被编译成了[vi](./usr/sbin/vi)。它本身支持处理utf8编码，但
 
 #### less分页阅读器
 限制最大只读1000行。  
-### ◉调试类：readelf、strace、dmesg、hexdump、strings  
+### ◉调试类：readelf、strace、dmesg、hexdump、strings、microcom  
 ### ◉其他：nslookup、tree、dtach、vmstat  
 
 
