@@ -211,9 +211,10 @@ neatvi被编译成了[vi](./usr/sbin/vi)。它本身支持处理utf8编码，但
 
 #### less分页阅读器
 限制最大只读1000行。  
-### ◉调试类：readelf、strace、dmesg、hexdump、strings、microcom  
+### ◉调试类：readelf、strace、dmesg、hexdump、strings、socat、microcom  
 ### ◉其他：nslookup、tree、dtach、vmstat  
-
+### ◉mrw和mro  
+二者本质是没有.sh后缀的脚本文件，内容是挂载根目录可读写/只读的命令缩写。  
 
 
 
