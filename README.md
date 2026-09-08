@@ -190,7 +190,7 @@ curl保留http(s)、tls 1.2和1.3。可以手搓请求命令，利用curl调用�
 h2t提取html源码的标签文本并打印：  
 <div><img src="./images/h2t.jpg"  style="width: 350px; height: auto;"></div>  
 
-j2t提取json里的键值对文本并打印。
+j2t提取json里的键值对文本并打印：  
 <div align="left"><img src="./images/j2t.jpg" style="width: auto; height: 150px;"></div>  
 
 ### ◉类vim快捷键的neatvi文本编辑器、sfm文件管理器、less分页阅读器  
