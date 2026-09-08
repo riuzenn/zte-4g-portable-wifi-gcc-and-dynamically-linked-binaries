@@ -179,7 +179,7 @@ scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提�
 <div align="center"><img src="./images/sftp.jpg"></div>  
 
 ### ◉curl、h2t和j2t  
-首次使用去https://curl.se/ca/cacert.pem下载CA证书集合，推送到/etc，也可以
+首次使用去 https://curl.se/ca/cacert.pem 下载CA证书集合，推送到/etc，也可以
 ```
 curl -k https://curl.se/ca/cacert.pem -o /etc/cacert.pem
 chmod 644 /etc/cacert.pem
