@@ -72,6 +72,11 @@
 
 #include <wolfssl/ssl.h>
 #include <wolfssl/error-ssl.h>
+/* wolfSSL 仅在 OPENSSL_EXTRA 下导出 OpenSSL 风格 ERR 错误队列 API。
+   裁剪构建走 wolfSSL_get_error() 取错，清队列仅为搭建兼容层，置空即可。 */
+#ifndef OPENSSL_EXTRA
+#define wolfSSL_ERR_clear_error() ((void)0)
+#endif
 
 #include "vtls/wolfssl.h"
 /* 裁剪：禁用 TLS 会话复用（wolfSSL 端已 --disable-sessioncerts） */
@@ -591,7 +596,7 @@ out:
 
 static CURLcode wssl_populate_x509_store(struct Curl_cfilter *cf,
                                          struct Curl_easy *data,
-                                         WOLFSSL_X509_STORE *store,
+                                         /* WOLFSSL_X509_STORE *store, */
                                          struct wssl_ctx *wssl)
 {
   struct ssl_primary_config *conn_config = Curl_ssl_cf_get_primary_config(cf);
@@ -641,8 +646,6 @@ static CURLcode wssl_populate_x509_store(struct Curl_cfilter *cf,
 
   CURL_TRC_CF(data, cf, "wssl_populate_x509_store, path=%s, blob=%d",
               ssl_cafile ? ssl_cafile : "none", !!ca_info_blob);
-  if(!store)
-    return CURLE_OUT_OF_MEMORY;
 
   if(ssl_cafile || ssl_capath) {
     int rc =
@@ -675,10 +678,10 @@ static CURLcode wssl_populate_x509_store(struct Curl_cfilter *cf,
     infof(data, " CApath: %s", ssl_capath ? ssl_capath : "none");
   }
 #endif
-  (void)store;
   return CURLE_OK;
 }
 
+#ifdef OPENSSL_EXTRA
 /* key to use at `multi->proto_hash` */
 #define MPROTO_WSSL_X509_KEY   "tls:wssl:x509:share"
 
@@ -794,19 +797,21 @@ static void wssl_set_cached_x509_store(struct Curl_cfilter *cf,
     share->CAfile = CAfile;
   }
 }
+#endif /* OPENSSL_EXTRA */
 
 CURLcode Curl_wssl_setup_x509_store(struct Curl_cfilter *cf,
                                     struct Curl_easy *data,
                                     struct wssl_ctx *wssl)
 {
+  wssl->x509_store_setup = TRUE;
+#ifndef OPENSSL_EXTRA
+  return wssl_populate_x509_store(cf, data, wssl);
+#else
   struct ssl_primary_config *conn_config = Curl_ssl_cf_get_primary_config(cf);
   struct ssl_config_data *ssl_config = Curl_ssl_cf_get_config(cf, data);
   CURLcode result = CURLE_OK;
   WOLFSSL_X509_STORE *cached_store;
   bool cache_criteria_met;
-
-  /* We do not want to do this again, no matter the outcome */
-  wssl->x509_store_setup = TRUE;
 
   /* Consider the X509 store cacheable if it comes exclusively from a CAfile,
      or no source is provided and we are falling back to wolfSSL's built-in
@@ -837,7 +842,7 @@ CURLcode Curl_wssl_setup_x509_store(struct Curl_cfilter *cf,
     }
     wolfSSL_CTX_set_cert_store(wssl->ssl_ctx, store);
 
-    result = wssl_populate_x509_store(cf, data, store, wssl);
+    result = wssl_populate_x509_store(cf, data, wssl);
     if(!result) {
       wssl_set_cached_x509_store(cf, data, store);
     }
@@ -845,10 +850,11 @@ CURLcode Curl_wssl_setup_x509_store(struct Curl_cfilter *cf,
   else {
     /* We never share the CTX's store, use it. */
     WOLFSSL_X509_STORE *store = wolfSSL_CTX_get_cert_store(wssl->ssl_ctx);
-    result = wssl_populate_x509_store(cf, data, store, wssl);
+    result = wssl_populate_x509_store(cf, data, wssl);
   }
 
   return result;
+#endif /* OPENSSL_EXTRA */
 }
 
 #ifdef WOLFSSL_TLS13
@@ -1154,6 +1160,10 @@ static CURLcode wssl_init_curves(struct Curl_easy *data,
                                  struct wssl_ctx *wctx,
                                  struct ssl_primary_config *conn_config)
 {
+#ifndef OPENSSL_EXTRA
+  (void)data; (void)wctx; (void)conn_config;
+  return CURLE_OK;
+#else
   char *curves = conn_config->curves;
   /* Without an explicit list, leave the key share group selection to
      wolfSSL's own default. */
@@ -1162,6 +1172,7 @@ static CURLcode wssl_init_curves(struct Curl_easy *data,
     return CURLE_SSL_CIPHER;
   }
   return CURLE_OK;
+#endif
 }
 
 static CURLcode wssl_init_ssl_handle(
@@ -1569,7 +1580,13 @@ static char *wssl_strerror(unsigned long error, char *buf, unsigned long size)
   DEBUGASSERT(size > 40);
   *buf = '\0';
 
+#ifdef OPENSSL_EXTRA
   wolfSSL_ERR_error_string_n(error, buf, size);
+#else
+  /* 无 OPENSSL_EXTRA（且 --disable-errorstrings）时回退为数字错误码 */
+  if(error)
+    curl_msnprintf(buf, size, "error %lu", error);
+#endif
 
   if(!*buf) {
     const char *msg = error ? "Unknown error" : "No error";
@@ -1636,8 +1653,10 @@ CURLcode Curl_wssl_verify_pinned(struct Curl_cfilter *cf,
     return CURLE_NOT_BUILT_IN;
 #endif
   }
+#ifdef KEEP_PEER_CERT
 end:
   wolfSSL_FreeX509(x509);
+#endif
   return result;
 }
 
@@ -1748,6 +1767,7 @@ static CURLcode wssl_handshake(struct Curl_cfilter *cf, struct Curl_easy *data)
   detail = wolfSSL_get_error(wssl->ssl, ret);
   CURL_TRC_CF(data, cf, "wolfSSL_connect() -> %d, detail=%d", ret, detail);
 
+#ifdef KEEP_PEER_CERT
   /* On a successful handshake with an IP address, do an extra check
    * on the peer certificate */
   if(ret == WOLFSSL_SUCCESS &&
@@ -1766,6 +1786,7 @@ static CURLcode wssl_handshake(struct Curl_cfilter *cf, struct Curl_easy *data)
       detail = DOMAIN_NAME_MISMATCH;
     wolfSSL_X509_free(cert);
   }
+#endif /* KEEP_PEER_CERT */
 
   if(ret == WOLFSSL_SUCCESS) {
     return CURLE_OK;
