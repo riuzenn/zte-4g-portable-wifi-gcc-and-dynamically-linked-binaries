@@ -88,7 +88,7 @@ make host-gcc-final CXXFLAGS="-std=gnu++11"
 将编译器路径写入用户变量：  
 `echo 'export PATH=$PATH:~/usr/bin' >> ~/.bashrc`  
 `source ~/.bashrc`  
-把随身wifi的lib目录下的所有文件复制到编译电脑的~/usr/ztelib路径（建议通过adb pull或cp -rL等方式将软链接转换成实际文件）。  
+把随身wifi的lib目录下的所有文件复制到编译电脑的~/ztelib路径（建议通过adb pull或cp -rL等方式将软链接转换成实际文件）。  
 可能需要将~/ztelib里所有.0后缀的标准库（除libc.so.0）另存为.so后缀，也就是同时存在.so.0和.so后缀。  
 ### ➤如何使用现成的编译器
 下载我编译好的[arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz](./arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz)  
@@ -179,6 +179,11 @@ scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提�
 <div align="center"><img src="./images/sftp.jpg"></div>  
 
 ### ◉curl、h2t和j2t  
+首次使用去https://curl.se/ca/cacert.pem下载CA证书集合，推送到/etc，也可以
+```
+curl -k https://curl.se/ca/cacert.pem -o /etc/cacert.pem
+chmod 644 /etc/cacert.pem
+```
 curl保留http(s)、tls 1.2和1.3。可以手搓请求命令，利用curl调用大语言模型api。  
 <div align="left"><img src="./images/调用大语言模型api.jpg"></div>  
 
