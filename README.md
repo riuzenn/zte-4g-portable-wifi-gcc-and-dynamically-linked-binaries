@@ -213,7 +213,7 @@ neatvi被编译成了[vi](./usr/sbin/vi)。它本身支持处理utf8编码，但
 限制最大只读1000行。  
 ### ◉调试类：readelf、strace、dmesg、hexdump、strings、socat、microcom  
 ### ◉其他：sash、nslookup、tree、dtach、vmstat  
-我之前想直接替换busybox，结果adb push进去的新busybox没执行权限。更糟的是/bin/sh软链接到了busybox上，一台机器报废了。所以有个备胎shell还是有必要的。  
+危险操作前可以挂一个静态编译的sash。我之前想直接替换busybox，结果adb push进去的新busybox没执行权限。更糟的是/bin/sh软链接到了busybox上，一台机器报废了。所以有个备胎shell还是有必要的。  
 <div align="center"><img src="./images/sash.jpg"></div>
 
 ### ◉mrw、mro  
