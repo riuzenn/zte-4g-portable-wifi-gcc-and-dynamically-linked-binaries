@@ -212,7 +212,10 @@ neatvi被编译成了[vi](./usr/sbin/vi)。它本身支持处理utf8编码，但
 #### less分页阅读器
 限制最大只读1000行。  
 ### ◉调试类：readelf、strace、dmesg、hexdump、strings、socat、microcom  
-### ◉其他：nslookup、tree、dtach、vmstat  
+### ◉其他：sash、nslookup、tree、dtach、vmstat  
+我之前想直接替换busybox，结果adb push进去的新busybox没执行权限。更糟的是/bin/sh软链接到了busybox上，一台机器报废了。所以有个备胎shell还是有必要的。  
+<div align="center"><img src="./images/sash.jpg"></div>
+
 ### ◉mrw、mro  
 二者本质是没有.sh后缀的脚本文件，内容是挂载根目录可读写/只读的命令缩写。  
 
