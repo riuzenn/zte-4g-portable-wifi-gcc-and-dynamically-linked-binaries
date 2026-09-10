@@ -82,7 +82,7 @@ make host-gcc-final CXXFLAGS="-std=gnu++11"
 ```
 ### ➤打包(位于./output/host/usr)、解压编译器，也就是挪个地  
 打包编译器：`cd output/host;tar -cJf toolchain-backup.tar.xz usr`  
-备份：`cp toolchain-backup.tar.gz ~`  
+备份：`cp toolchain-backup.tar.xz ~`  
 解压到~：`tar -xJf toolchain-backup.tar.xz -C ~`  
 查看生成的编译器硬编码参数：`cd ~;./usr/bin/arm-buildroot-linux-uclibcgnueabi-gcc -v`  
 将编译器路径写入用户变量：  
