@@ -4,6 +4,8 @@ unzip wolfssl-5.9.2.zip
 mv wolfssl-5.9.2 wolfssl_build
 cd ~/wolfssl_build
 
+#覆盖修改后的一干文件到指定位置
+
 make distclean
 rm -rf ~/ztelib/bin ~/ztelib/include ~/ztelib/lib ~/ztelib/share
 export TOOLCHAIN=${HOME}/usr
@@ -16,9 +18,9 @@ export AR="${CROSS_COMPILE}gcc-ar"
 export RANLIB="${CROSS_COMPILE}gcc-ranlib"
 export STRIP="${CROSS_COMPILE}strip"
 
-export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections --sysroot=${SYSROOT} -fno-pie -fstack-protector-strong -flto=$(nproc) -falign-functions=2 -falign-loops=2 -falign-jumps=2 -DMICRO_SESSION_CACHE -DNO_WOLFSSL_SERVER -DWOLFSSL_NO_ECC_SIGN"
+export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections --sysroot=${SYSROOT} -fno-pie -fstack-protector-strong -flto=$(nproc) -DMICRO_SESSION_CACHE -DNO_WOLFSSL_SERVER -DWOLFSSL_NO_ECC_SIGN -fno-align-functions -fno-align-loops -fno-align-jumps -fno-align-labels -fmerge-all-constants -fno-common"
 
-export LDFLAGS="-mcpu=cortex-a53 -mtune=cortex-a53 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -L${ZTE_LIB} -Wl,-rpath-link=${ZTE_LIB} -Wl,-O2 -Wl,--gc-sections -Wl,-dynamic-linker,/lib/ld-uClibc.so.0 -Wl,-z,max-page-size=4096 -Wl,--no-allow-shlib-undefined -Wl,-z,norelro -Wl,-z,lazy -Wl,-t -Wl,-Map,aaa.map -flto=$(nproc)"
+export LDFLAGS="-mcpu=cortex-a53 -mtune=cortex-a53 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -L${ZTE_LIB} -Wl,-rpath-link=${ZTE_LIB} -Wl,-O2 -Wl,--gc-sections -Wl,-dynamic-linker,/lib/ld-uClibc.so.0 -Wl,-z,max-page-size=4096 -Wl,--no-allow-shlib-undefined -Wl,-z,norelro -Wl,-z,lazy -Wl,-t -Wl,-Map,aaa.map -flto=$(nproc) -Wl,--build-id=none"
 
 export LIBS=""
 

@@ -17,7 +17,8 @@ CFLAGS  = -Wextra -Os \
           -ffunction-sections -fdata-sections -fvisibility=hidden \
           --sysroot=$(SYSROOT) \
           -fno-pie -fno-stack-protector \
-          -falign-functions=2 -falign-loops=2 -falign-jumps=2
+          -fno-align-functions -fno-align-loops -fno-align-jumps -fno-align-labels \
+          -fmerge-all-constants -fno-common
 
 # === 4. 链接参数 (LDFLAGS & LIBS) ===
 LDFLAGS = -mcpu=cortex-a53 -mtune=cortex-a53 \
@@ -30,11 +31,9 @@ LDFLAGS = -mcpu=cortex-a53 -mtune=cortex-a53 \
           -Wl,-z,max-page-size=4096 \
           -Wl,--no-undefined -Wl,--no-allow-shlib-undefined \
           -Wl,-z,norelro -Wl,-z,lazy \
-          -Wl,-t
+          -Wl,-t -Wl,--build-id=none
 
-LIBS    = -Wl,--start-group \
-          -lsoftap -lnvram -lsoft_timer \
-          -Wl,--end-group
+LIBS    = -lsoftap -lnvram -lsoft_timer
 
 # === 5. 目标与规则 ===
 TARGET = at

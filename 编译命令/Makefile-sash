@@ -7,6 +7,8 @@ tar -xzf sash-3.8.tar.gz
 mv sash-3.8 sash_build
 cd ~/sash_build
 
+#替换裁剪后的Makefile和sash.c到sash_build
+
 make clean
 export TOOLCHAIN=${HOME}/arm-linux-musleabi-cross
 export CROSS_COMPILE=${TOOLCHAIN}/bin/arm-linux-musleabi-
@@ -16,9 +18,9 @@ export AR="${CROSS_COMPILE}gcc-ar"
 export RANLIB="${CROSS_COMPILE}gcc-ranlib"
 export STRIP="${CROSS_COMPILE}strip"
 
-export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections -fvisibility=hidden -fno-pie -fno-stack-protector -flto=$(nproc) -fno-align-functions -fno-align-loops -fno-align-jumps -fno-align-labels"
+export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections -fvisibility=hidden -fno-pie -fno-stack-protector -flto=$(nproc) -fno-align-functions -fno-align-loops -fno-align-jumps -fno-align-labels -fmerge-all-constants -fno-common"
 
-export LDFLAGS="-static -mcpu=cortex-a53 -mtune=cortex-a53 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -Wl,-O2 -Wl,--gc-sections -Wl,-z,max-page-size=4096 -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -no-pie -Wl,-z,norelro -Wl,-z,lazy -Wl,-t -Wl,-Map,aaa.map -Wl,--build-id=none -flto=$(nproc)"
+export LDFLAGS="-static -mcpu=cortex-a53 -mtune=cortex-a53 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -Wl,-O2 -Wl,--gc-sections -Wl,-z,max-page-size=4096 -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -no-pie -Wl,-z,norelro -Wl,-z,lazy -Wl,-t -Wl,-Map,aaa.map -flto=$(nproc) -Wl,--build-id=none"
 
 export LIBS=""
 

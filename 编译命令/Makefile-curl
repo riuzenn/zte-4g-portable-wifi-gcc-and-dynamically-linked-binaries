@@ -4,7 +4,8 @@ tar -jxf curl-8.22.0.tar.bz2
 mv curl-8.22.0 curl_build
 cd ~/curl_build
 
-#替换修改后的wolfssl.c到curl_build/lib/vtls
+#替换裁剪的wolfssl.c到curl_build/lib/vtls
+#替换裁剪后的tool_help.c到curl_build/src
 make distclean
 export TOOLCHAIN=${HOME}/usr
 export CROSS_COMPILE=${TOOLCHAIN}/bin/arm-buildroot-linux-uclibcgnueabi-
@@ -16,9 +17,9 @@ export AR="${CROSS_COMPILE}gcc-ar"
 export RANLIB="${CROSS_COMPILE}gcc-ranlib"
 export STRIP="${CROSS_COMPILE}strip"
 
-export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections -fvisibility=hidden --sysroot=${SYSROOT} -fno-pie -fstack-protector-strong -flto=$(nproc) -falign-functions=2 -falign-loops=2 -falign-jumps=2"
+export CFLAGS="-Wextra -Os -mcpu=cortex-a53 -mtune=cortex-a53 -mfloat-abi=soft -mthumb -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -fomit-frame-pointer -ffunction-sections -fdata-sections -fvisibility=hidden --sysroot=${SYSROOT} -fno-pie -fstack-protector-strong -flto=$(nproc) -fno-align-functions -fno-align-loops -fno-align-jumps -fno-align-labels -fmerge-all-constants -fno-common"
 
-export LDFLAGS="-mcpu=cortex-a53 -mtune=cortex-a53 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -L${ZTE_LIB} -Wl,-rpath-link=${ZTE_LIB} -Wl,-O2 -Wl,--gc-sections -Wl,-dynamic-linker,/lib/ld-uClibc.so.0 -Wl,-z,max-page-size=4096 -Wl,--no-allow-shlib-undefined -Wl,-z,relro -Wl,-z,now -Wl,-t -Wl,-Map,aaa.map -flto=$(nproc)"
+export LDFLAGS="-mcpu=cortex-a53 -mtune=cortex-a53 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -L${ZTE_LIB} -Wl,-rpath-link=${ZTE_LIB} -Wl,-O2 -Wl,--gc-sections -Wl,-dynamic-linker,/lib/ld-uClibc.so.0 -Wl,-z,max-page-size=4096 -Wl,--no-allow-shlib-undefined -Wl,-z,relro -Wl,-z,now -Wl,-t -Wl,-Map,aaa.map -flto=$(nproc) -Wl,--build-id=none"
 
 export LIBS=""
 
