@@ -91,9 +91,12 @@ make host-gcc-final CXXFLAGS="-std=gnu++11"
 把随身wifi的lib目录下的所有文件复制到编译电脑的~/ztelib路径（建议通过adb pull或cp -rL等方式将软链接转换成实际文件）。  
 可能需要:  
 将~/ztelib里所有.0后缀的库（除libc.so.0）另存为.so后缀，也就是同时存在.so.0和.so后缀。  
-备份编译器的链接器，并把官方系统的链接器ld-uClibc.so.0和ld-uClibc-0.9.33.2.so复制到~/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/lib  
-`mv ld-uClibc.so.0 ld-uClibc.so.0.bak`  
-`mv ld-uClibc-0.9.33.2.so ld-uClibc-0.9.33.2.so.bak`  
+备份编译器的链接器，再把官方系统的链接器ld-uClibc.so.0和ld-uClibc-0.9.33.2.so复制到~/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/lib  
+```
+cd ~/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/lib
+mv ld-uClibc.so.0 ld-uClibc.so.0.bak
+mv ld-uClibc-0.9.33.2.so ld-uClibc-0.9.33.2.so.bak
+```
 ### ➤如何使用现成的编译器
 下载我编译好的[arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz](./arm-buildroot-linux-uclibcgnueabi-gcc-4.9.3.tar.xz)  
 `cd ~`  
