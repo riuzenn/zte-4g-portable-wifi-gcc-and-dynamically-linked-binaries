@@ -127,6 +127,8 @@ cat << 'EOF' > localoptions.h
 #define DROPBEAR_REEXEC 0
 /* 这里设置sftp-server的放置路径 */
 #define SFTPSERVER_PATH "/usr/sbin/sftp-server"
+/* 这里设置dropbear.pid的路径 */
+#define DROPBEAR_PIDFILE "/tmp/run/dropbear.pid"
 EOF
 
 ./configure \
