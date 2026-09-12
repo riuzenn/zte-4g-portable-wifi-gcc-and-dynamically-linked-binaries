@@ -179,7 +179,7 @@ chmod 600 ~/.ssh/authorized_keys
 我写了sshon和sshoff，终端直接输入它们的文件名就可以开启和关闭dropbear。  
 windows的终端里输入ssh admin@192.168.0.1即可连接。  
 f30ap的默认账户名是admin，如需修改要同步改/etc里的passwd和shadow。另外以管理员身份打开文本编辑器，在`C:\Windows\System32\drivers\etc\hosts`里加入`192.168.0.1 自定义字符`就可以以域名连接，如`ssh admin@f30`。  
-<div align="center"><img src="./images/包含ssh的index.jpg.jpg"></div>    
+<div align="center"><img src="./images/包含ssh的index.jpg"></div>    
 
 #### 客户端scp和sftp  
 scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提供的ssh进程，使用二者前要先启用dropbear。windows客户端的scp工具使用sftp协议，dropbear会自己调用sftp-server。  
