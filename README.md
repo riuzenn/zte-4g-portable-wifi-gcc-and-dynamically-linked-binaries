@@ -189,7 +189,7 @@ scp和sftp是传输文件的工具，类似adb push/pull，都依赖dropbear提�
 二者服务于在网页浏览器里执行shell命令的需求。  
 websh原理和goahead自带cgi一样，都是一次命令fork一个sh进程  
 安装：[websh](./usr/sbin/websh)→/usr/sbin，[websh.html](./etc_ro/web/websh.html)→/etc_ro/web，chmod 755  
-启动：服务器端websh &，客户端访问http://192.169.0.1:2333 (/websh.html可不写)  
+启动：服务器端websh &，客户端访问http://192.168.0.1:2333 (/websh.html可不写)  
 关闭：服务器端killall websh 
 <div align="center"><img src="./images/websh.jpg"></div>  
 
@@ -205,7 +205,7 @@ https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css
 https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js  
 https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.min.js  
 chmod 755  
-启动：服务器端wssh &，客户端访问http://192.169.0.1:2333 (/wssh.html可不写)  
+启动：服务器端wssh &，客户端访问http://192.168.0.1:2333 (/wssh.html可不写)  
 关闭：服务器端killall wssh  
 <div align="center"><img src="./images/wssh.jpg"></div>  
 
