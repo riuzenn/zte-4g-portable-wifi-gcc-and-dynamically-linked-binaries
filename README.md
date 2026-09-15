@@ -226,7 +226,7 @@ j2t提取json里的键值对文本并打印：
 <div align="left"><img src="./images/j2t.jpg" style="width: auto; height: 150px;"></div>  
 
 ### ◉gal
-gal全称goahead launcher。goahead是官方管理界面的后端程序，内存占用1MB。gal的作用是在不影响原版功能的情况下减少内存占用。gal配合killall goahead和gal &，代替goahead留在后台进程，只需要150KB。设备重启后第一次访问`http://192.168.0.1`，gal会自杀然后启动goahead。  
+gal全称goahead launcher。goahead是官方管理界面的后端程序，占用1MB运行内存。gal的作用是在不影响原版功能的情况下减少运行内存占用。gal配合killall goahead和gal &，代替goahead留在后台进程，只需要150KB。设备重启后第一次访问`http://192.168.0.1`，gal会自杀然后启动goahead。  
 ### ◉类vim快捷键的neatvi文本编辑器、sfm文件管理器、less分页阅读器  
 #### neatvi  
 neatvi被编译成了[vi](./usr/sbin/vi)。它本身支持处理utf8编码，但是通过adb shell获得的终端会以gbk编码输入字符导致neatvi不能识别显示乱码。解决方法是开启Windows的"Beta版：使用Unicode UTF-8提供全球语言支持"（通过ssh获得的终端没有这个问题）。  
