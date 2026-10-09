@@ -208,6 +208,7 @@ https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.min.js
 chmod 755  
 启动：服务器端wssh &，客户端访问http://192.168.0.1:2333 (/wssh.html可不写)  
 关闭：服务器端killall wssh  
+WebSocket最长连接 30 分钟，空闲 5 分钟断开
 <div align="center"><img src="./images/wssh.jpg"></div>  
 
 ### ◉curl、h2t和j2t  
